@@ -193,14 +193,17 @@ function checkIDblank() {
     document.getElementById("tbMatKhau").innerHTML =
       "Mật Khẩu không được để trống";
   } else if (!minLength(password, 6)) {
+    isValid = false;
     document.getElementById("tbMatKhau").style.display = "block";
     document.getElementById("tbMatKhau").innerHTML =
       "Mật Khẩu tối thiểu 6 ký tự";
   } else if (!maxLength(password, 10)) {
+    isValid = false;
     document.getElementById("tbMatKhau").style.display = "block";
     document.getElementById("tbMatKhau").innerHTML =
       "Mật Khẩu tối đa 10 ký tự ";
   } else if (!pwPattern.test(password)) {
+    isValid = false;
     document.getElementById("tbMatKhau").style.display = "block";
     document.getElementById("tbMatKhau").innerHTML =
       "Mật Khẩu có ký tự không phù hợp";
@@ -292,6 +295,7 @@ function findEmailStaff(email) {
 }
 function updateStaff(staffId) {
   resetForm();
+  document.getElementById("btnThemNV").disabled = true;
   var index = findIdStaff(staffId);
   console.log(index);
   if (index !== -1) {
@@ -325,6 +329,10 @@ function reUpdate() {
   //   document.getElementById("tbEmail").innerHTML = "Email đã sử dụng, vui lòng nhập email khác";
   //   return
   // }
+
+  if (!checkIDblank()) {
+    return;
+  }
   var staff = new Staff(
     id,
     name,
@@ -343,6 +351,7 @@ function reUpdate() {
   localStorage.setItem("workers", JSON.stringify(staffs));
 
   display(staffs);
+  $("#myModal").modal("hide");
 }
 
 function minLength(value, limit) {
